@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Height Estimation</title>
+</head>
+<body>
+    <h1>Try On</h1>
+    <button id="startButton">Start</button>
+    <button id="stopButton">Stop</button>
+
+    <script>
+        document.getElementById('startButton').addEventListener('click', function() {
+            fetch('/start', {method: 'POST'})
+                .then(response => response.text())
+                .then(data => console.log(data));
+        });
+
+        document.getElementById('stopButton').addEventListener('click', function() {
+            fetch('/stop', {method: 'POST'})
+                .then(response => response.text())
+                .then(data => console.log(data));
+        });
+    </script>
+</body>
+</html>
