@@ -3,24 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Height Estimation</title>
+    <title>Height Estimation Application</title>
 </head>
 <body>
-    <h1>Try On</h1>
+    <h1>Height Estimation Application</h1>
     <button id="startButton">Start</button>
     <button id="stopButton">Stop</button>
+    <video id="video" width="640" height="480" autoplay></video>
 
     <script>
+        const video = document.getElementById('video');
+        let stream;
+
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                console.log("Camera stream started.");
+            } catch (error) {
+                console.error("Error accessing camera: ", error);
+                alert("Error accessing camera: " + error.message);
+            }
+        }
+
+        function stopCamera() {
+            if (stream) {
+                const tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+                video.srcObject = null;
+                console.log("Camera stream stopped.");
+            }
+        }
+
         document.getElementById('startButton').addEventListener('click', function() {
-            fetch('/start', {method: 'POST'})
+            fetch('/start', { method: 'POST' })
                 .then(response => response.text())
-                .then(data => console.log(data));
+                .then(data => {
+                    console.log(data);
+                    startCamera();
+                })
+                .catch(error => console.error("Error starting camera:", error));
         });
 
         document.getElementById('stopButton').addEventListener('click', function() {
-            fetch('/stop', {method: 'POST'})
+            fetch('/stop', { method: 'POST' })
                 .then(response => response.text())
-                .then(data => console.log(data));
+                .then(data => {
+                    console.log(data);
+                    stopCamera();
+                })
+                .catch(error => console.error("Error stopping camera:", error));
         });
     </script>
 </body>

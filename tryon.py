@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from flask_cors import CORS
 import threading
 import cv2
 import numpy as np
@@ -6,6 +7,8 @@ import time
 from cvzone.PoseModule import PoseDetector
 
 app = Flask(__name__)
+CORS(app)  # Allow cross-origin requests
+
 camera_running = False
 camera_thread = None
 
